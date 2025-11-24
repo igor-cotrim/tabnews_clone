@@ -15,3 +15,18 @@ jobs:
         run: npm ci
       - name: Run Prettier
         run: npm run lint:prettier:check
+
+  eslint:
+    name: Run Eslint Checks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "lts/jod"
+      - name: Install dependencies
+        run: npm ci
+      - name: Run Eslint
+        run: npm run lint:eslint:check

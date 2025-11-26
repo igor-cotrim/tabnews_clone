@@ -7,7 +7,7 @@ describe("GET /api/v1/migrations", () => {
   });
 
   describe("Anonymous user", () => {
-    it("Running pending migrations", async () => {
+    it("Retrieving pending migrations", async () => {
       const res = await fetch("http://localhost:3000/api/v1/migrations");
       const body = await res.json();
 

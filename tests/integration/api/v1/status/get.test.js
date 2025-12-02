@@ -1,6 +1,6 @@
 import orchestrator from "tests/orchestrator";
 
-describe("GET /api/v1/status should return 200", () => {
+describe("GET /api/v1/status", () => {
   beforeAll(async () => {
     await orchestrator.waitForAllServices();
   });

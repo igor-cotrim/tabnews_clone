@@ -1,6 +1,6 @@
 import useSWR from "swr";
 
-import { fetchApi } from "services/fetch";
+import { fetchApi } from "infra/services/fetch";
 
 export default function DatabaseStatus() {
   const { data, isLoading } = useSWR("/api/v1/status", fetchApi, {

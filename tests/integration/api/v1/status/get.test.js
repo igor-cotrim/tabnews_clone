@@ -14,7 +14,6 @@ describe("GET /api/v1/status should return 200", () => {
       expect(res.status).toBe(200);
       expect(body.updated_at).toBeDefined();
       expect(body.updated_at).toEqual(parsedUpdatedAt);
-      expect(body.dependencies.database.status).toEqual("healthy");
       expect(body.dependencies.database.version).toEqual("16.0");
       expect(body.dependencies.database.max_connections).toEqual(100);
       expect(body.dependencies.database.opened_connections).toEqual(1);

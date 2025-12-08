@@ -11,19 +11,9 @@ describe("GET /api/v1/users/[username]", () => {
 
   describe("Anonymous user", () => {
     it("With exact case match", async () => {
-      const response1 = await fetch("http://localhost:3000/api/v1/users", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          username: "john_doe",
-          email: "johndoe@gmail.com",
-          password: "12345678",
-        }),
+      const createdUser = await orchestrator.createUser({
+        username: "john_doe",
       });
-
-      expect(response1.status).toBe(201);
 
       const response2 = await fetch(
         "http://localhost:3000/api/v1/users/john_doe",
@@ -34,7 +24,7 @@ describe("GET /api/v1/users/[username]", () => {
       expect(body2).toEqual({
         id: body2.id,
         username: "john_doe",
-        email: "johndoe@gmail.com",
+        email: createdUser.email,
         password: body2.password,
         created_at: body2.created_at,
         updated_at: body2.updated_at,
@@ -45,37 +35,27 @@ describe("GET /api/v1/users/[username]", () => {
     });
 
     it("With case mismatch", async () => {
-      const response1 = await fetch("http://localhost:3000/api/v1/users", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          username: "John_Doe_1",
-          email: "johnDoe_1@gmail.com",
-          password: "12345678",
-        }),
+      const createdUser = await orchestrator.createUser({
+        username: "John_Doe_1",
       });
 
-      expect(response1.status).toBe(201);
-
-      const response2 = await fetch(
+      const response = await fetch(
         "http://localhost:3000/api/v1/users/john_doe_1",
       );
-      const body2 = await response2.json();
+      const body = await response.json();
 
-      expect(response2.status).toBe(200);
-      expect(body2).toEqual({
-        id: body2.id,
-        username: "John_Doe_1",
-        email: "johnDoe_1@gmail.com",
-        password: body2.password,
-        created_at: body2.created_at,
-        updated_at: body2.updated_at,
+      expect(response.status).toBe(200);
+      expect(body).toEqual({
+        id: body.id,
+        username: createdUser.username,
+        email: createdUser.email,
+        password: body.password,
+        created_at: body.created_at,
+        updated_at: body.updated_at,
       });
-      expect(uuidVersion(body2.id)).toBe(4);
-      expect(Date.parse(body2.created_at)).not.toBeNaN();
-      expect(Date.parse(body2.updated_at)).not.toBeNaN();
+      expect(uuidVersion(body.id)).toBe(4);
+      expect(Date.parse(body.created_at)).not.toBeNaN();
+      expect(Date.parse(body.updated_at)).not.toBeNaN();
     });
 
     it("With nonexistent username", async () => {
